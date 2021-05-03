@@ -17,7 +17,7 @@ def load_mp3(file_label):
     return sample_audio, file_label[1]
 
 def get_sample_labels(files, ebirds):
-    labels = [i.split('/')[1] for i in files]
+    labels = [i.split('/')[-2] for i in files]
     labels_num = [str(ebirds.index(i)) for i in labels]
     return list(zip(files, labels_num))
 

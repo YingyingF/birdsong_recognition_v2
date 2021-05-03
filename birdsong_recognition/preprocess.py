@@ -11,7 +11,7 @@ from birdsong_recognition.utils import *
 
 def preprocess(running_in_colab, ebirds):
     if running_in_colab:
-        dataset_path = 'drive/MyDrive/dataset/'
+        dataset_path = '../drive/MyDrive/dataset/'
     else:
         dataset_path = ''
 

@@ -1,13 +1,15 @@
 import tensorflow as tf
 import random
+import argparse
 from birdsong_recognition.preprocess import *
 
 
-def main():
+def main(args):
     seed = 42
     random.seed(seed)
 
-    running_in_colab = False
+    run_test = args.run_test
+    running_in_colab = args.colab
 
     ebirds = ['norcar', 'blujay', 'bkcchi']
     train_ds, val_ds = preprocess(running_in_colab, ebirds)
@@ -48,10 +50,16 @@ def main():
     print('Starting training')
     print('*'*30)
 
-    #LargeDataset
-    model.fit(train_ds_, epochs=2, validation_data=val_ds_, callbacks=[WandbCallback()], steps_per_epoch=2)
+    if run_test:
+        model.fit(train_ds_, epochs=2, validation_data=val_ds_, steps_per_epoch=2)
+    else:
+        model.fit(train_ds_, epochs=2, validation_data=val_ds_, callbacks=[WandbCallback()])       
 
     wb.finish()
 
 if __name__== '__main__':
-    main()
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument('--run_test', action='store_true')
+    arg_parser.add_argument('--colab', action='store_true')
+    args = arg_parser.parse_args()
+    main(args)
