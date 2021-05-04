@@ -1,0 +1,28 @@
+program: train.py
+method: random
+metric:
+  goal: minimize
+  name: val_loss
+parameters:
+  lr:
+    values: [0.001, 0.01, 0.003]
+  bs:
+    values: [32]
+  dropout:
+    values: [0.15]
+  hidden_layer_size:
+    values: [64]
+  epochs:
+    value: 20
+  run_test:
+    values: [True]
+early_terminate:
+  type: hyperband
+  s: 2
+  eta: 3
+  max_iter: 27
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - ${args}
