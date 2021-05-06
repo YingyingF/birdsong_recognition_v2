@@ -8,7 +8,8 @@ import random
 
 
 __all__ = ['load_mp3', 'get_sample_labels', 'preprocess_file', 'pad_by_zeros', 'split_file_by_window_size',
-           'wrapper_split_file_by_window_size', 'create_dataset_fixed_size', 'get_spectrogram', 'add_channel_dim']
+           'wrapper_split_file_by_window_size', 'create_dataset_fixed_size', 'get_spectrogram', 'add_channel_dim',
+           'dotdict']
 
 # Cell
 def load_mp3(file_label):
@@ -37,7 +38,7 @@ def pad_by_zeros(sample, min_file_size, last_sample_size):
     return sample_padded
 
 # Cell
-def split_file_by_window_size(sample, label, min_file_size=72576):
+def split_file_by_window_size(sample, label, min_file_size=132300):
     # number of subsamples given none overlapping window size.
     subsample_count = int(np.round(sample.shape[0]/min_file_size))
     # ignore extremely long files for now
@@ -57,7 +58,7 @@ def split_file_by_window_size(sample, label, min_file_size=72576):
     return sample, label
 
 # Cell
-def wrapper_split_file_by_window_size(sample, label, min_file_size=72576):
+def wrapper_split_file_by_window_size(sample, label, min_file_size=132300):
     sample, label = tf.py_function(split_file_by_window_size, inp=(sample, label, min_file_size),
             Tout=(sample.dtype, label.dtype))
     return sample, label
@@ -89,3 +90,8 @@ def get_spectrogram(sample, label):
 def add_channel_dim(sample, label):
     sample = tf.expand_dims(sample, axis=-1)
     return sample, label
+
+class dotdict(dict):
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__

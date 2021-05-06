@@ -10,6 +10,9 @@ import random
 from birdsong_recognition.utils import *
 
 def preprocess(running_in_colab, ebirds):
+    '''
+    One time preprocessing.
+    '''
     if running_in_colab:
         dataset_path = '../drive/MyDrive/dataset/'
     else:
@@ -81,6 +84,21 @@ def preprocess(running_in_colab, ebirds):
 
     train_ds = tf.data.Dataset.from_tensor_slices((train_samples_all, train_labels_all))
     val_ds = tf.data.Dataset.from_tensor_slices((val_samples_all, val_labels_all))
+
+    os.makedirs('preprocessed_dataset', exist_ok=True)
+    tf.data.experimental.save(train_ds, 'preprocessed_dataset/train_ds', )
+    tf.data.experimental.save(val_ds, 'preprocessed_dataset/val_ds', )
+
+
+def create_ds(element_spec, return_audio_samples=False):
+    '''
+    Add spectrogram features
+    '''
+    train_ds = tf.data.experimental.load('preprocessed_dataset/train_ds', element_spec=element_spec)
+    val_ds = tf.data.experimental.load('preprocessed_dataset/val_ds', element_spec=element_spec)
+
+    if return_audio_samples:
+        return train_ds, val_ds
 
     train_ds = train_ds.map(get_spectrogram)
     val_ds = val_ds.map(get_spectrogram)
