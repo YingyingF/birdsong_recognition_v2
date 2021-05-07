@@ -14,8 +14,6 @@ parameters:
     values: [64, 96, 128]
   epochs:
     value: 20
-  colab:
-    values: [True]
 early_terminate:
   type: hyperband
   s: 2
