@@ -13,17 +13,47 @@ __all__ = ['load_mp3', 'get_sample_labels', 'preprocess_file', 'pad_by_zeros', '
 
 # Cell
 def load_mp3(file_label):
+    """
+    Reads and decodes mp3 based on file name.
+
+    Args:
+    file_label (list): audio file path and audio file label
+
+    Returns:
+    A tuple of decoded audio and label.
+      
+    """
     sample = tf.io.read_file(file_label[0])
     sample_audio = tfio.audio.decode_mp3(sample)
     return sample_audio, file_label[1]
 
 def get_sample_labels(files, ebirds):
+    """
+    Converts label from string to numerical category.
+
+    Args:
+        files (list): list of audio file paths
+        ebirds (list): string name of the birds
+
+    Returns:
+        [type]: [description]
+    """
     labels = [i.split('/')[-2] for i in files]
     labels_num = [str(ebirds.index(i)) for i in labels]
     return list(zip(files, labels_num))
 
 # Cell
 def preprocess_file(sample_audio, label):
+    """
+    Minmax scale the audio signal.
+
+    Args:
+    sample_audio: decoded audio
+    label (int): label of the sample_audio
+
+    Returns:
+    A tuple of scaled audio and int label.
+    """
     # Only look at the first channel
     sample_audio = sample_audio[:,0]
     sample_audio_scaled = (sample_audio - tf.math.reduce_min(sample_audio))/(tf.math.reduce_max(sample_audio) - tf.math.reduce_min(sample_audio))
@@ -59,6 +89,17 @@ def split_file_by_window_size(sample, label, min_file_size=132300):
 
 # Cell
 def wrapper_split_file_by_window_size(sample, label, min_file_size=132300):
+    """
+    Format audio into 3 second segments.
+
+    Args:
+        sample (float32): decoded audio
+        label (int): label
+        min_file_size (int, optional): Minimum segment assuming audio sample rate of 44.1kHz. Defaults to 132300.
+
+    Returns:
+        Tuple: sample, label
+    """
     sample, label = tf.py_function(split_file_by_window_size, inp=(sample, label, min_file_size),
             Tout=(sample.dtype, label.dtype))
     return sample, label

@@ -1,5 +1,6 @@
 import tensorflow as tf
 import random
+import os
 import argparse
 import tensorflow.keras as keras
 from tensorflow.keras import layers, losses, optimizers
@@ -10,11 +11,17 @@ from birdsong_recognition.preprocess import *
 from birdsong_recognition.utils import *
 
 
+EBIRDS = ['norcar', 'blujay', 'bkcchi']
+
 def main(config):
     seed = 42
     random.seed(seed)
 
     run_test = config.run_test
+
+    # check if preprocessed dataset directory already exists.
+    if not os.path.exists('./preprocessed_dataset'):
+        preprocess(running_in_colab=config.running_in_colab, ebirds=EBIRDS)
 
     element_spec = (tf.TensorSpec(shape=(132300,), dtype=tf.float32, name='input'),
                     tf.TensorSpec(shape=(), dtype=tf.int32, name='label'))
@@ -57,6 +64,7 @@ def main(config):
 if __name__== '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument('--run_test', type=bool, default=False)
+    arg_parser.add_argument('--running_in_colab', type=bool, default=True)
     arg_parser.add_argument('--lr', default=1e-3)
     arg_parser.add_argument('--bs', default=32)
     arg_parser.add_argument('--dropout', default=0.2)
@@ -70,6 +78,7 @@ if __name__== '__main__':
                 'hidden_layer_size': 64,
                 'epochs': 20,
                 'run_test': args.run_test,
+                'running_in_colab': args.running_in_colab,
                 }
 
     if not args.run_test:

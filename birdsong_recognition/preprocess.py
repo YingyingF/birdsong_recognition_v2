@@ -9,10 +9,13 @@ import tensorflow as tf
 import random
 from birdsong_recognition.utils import *
 
-def preprocess(running_in_colab, ebirds):
+def preprocess(running_in_colab, ebirds, seed=42):
     '''
     One time preprocessing.
     '''
+    random.seed(seed)
+    tf.random.set_seed(seed)
+    
     if running_in_colab:
         dataset_path = '../drive/MyDrive/dataset/'
     else:
@@ -81,13 +84,16 @@ def preprocess(running_in_colab, ebirds):
 
     train_samples_all, train_labels_all = create_dataset_fixed_size(train_win_ds)
     val_samples_all, val_labels_all = create_dataset_fixed_size(val_win_ds)
+    test_samples_all, test_labels_all = create_dataset_fixed_size(test_win_ds)
 
     train_ds = tf.data.Dataset.from_tensor_slices((train_samples_all, train_labels_all))
     val_ds = tf.data.Dataset.from_tensor_slices((val_samples_all, val_labels_all))
+    test_ds = tf.data.Dataset.from_tensor_slices((test_samples_all, test_labels_all))
 
     os.makedirs('preprocessed_dataset', exist_ok=True)
     tf.data.experimental.save(train_ds, 'preprocessed_dataset/train_ds', )
     tf.data.experimental.save(val_ds, 'preprocessed_dataset/val_ds', )
+    tf.data.experimental.save(test_ds, 'preprocessed_dataset/test_ds', )
 
 
 def create_ds(element_spec, return_audio_samples=False):
@@ -96,14 +102,17 @@ def create_ds(element_spec, return_audio_samples=False):
     '''
     train_ds = tf.data.experimental.load('preprocessed_dataset/train_ds', element_spec=element_spec)
     val_ds = tf.data.experimental.load('preprocessed_dataset/val_ds', element_spec=element_spec)
+    test_ds = tf.data.experimental.load('preprocessed_dataset/test_ds', element_spec=element_spec)
 
     if return_audio_samples:
-        return train_ds, val_ds
+        return train_ds, val_ds, test_ds
 
     train_ds = train_ds.map(get_spectrogram)
     val_ds = val_ds.map(get_spectrogram)
+    test_ds = test_ds.map(get_spectrogram)
 
     train_ds = train_ds.map(add_channel_dim)
     val_ds = val_ds.map(add_channel_dim)
+    test_ds = test_ds.map(add_channel_dim)
 
-    return train_ds, val_ds
+    return train_ds, val_ds, test_ds
