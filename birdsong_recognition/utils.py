@@ -69,8 +69,9 @@ def pad_by_zeros(sample, min_file_size, last_sample_size):
 
 # Cell
 def split_file_by_window_size(sample, label, min_file_size=132300):
-    # number of subsamples given none overlapping window size.
+    # number of subsamples given none overlapping window size of 3s.
     subsample_count = int(np.round(sample.shape[0]/min_file_size))
+
     # ignore extremely long files for now
     subsample_limit = 75
     if subsample_count <= subsample_limit:
@@ -79,7 +80,13 @@ def split_file_by_window_size(sample, label, min_file_size=132300):
         if last_sample_size/min_file_size > 0.5:
             sample = pad_by_zeros(sample, min_file_size, last_sample_size)
         else:
-            sample = sample[:subsample_count*min_file_size]
+            # if subsample_count == 0, meaning sample is less than 3s. Then use the whole sample.
+            if subsample_count == 0:
+                sample = pad_by_zeros(sample, min_file_size, last_sample_size)
+                # necessary so that the pad function for label below has the right shape.
+                subsample_count += 1
+            else:
+                sample = sample[:subsample_count*min_file_size]
         sample = tf.reshape(sample, shape=[subsample_count, min_file_size])
         label = tf.pad(tf.expand_dims(label, axis=0), paddings=[[0, subsample_count-1]], constant_values=label.numpy())
     else:

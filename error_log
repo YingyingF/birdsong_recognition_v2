@@ -1,0 +1,100 @@
+ERROR:root:./dataset/norcar/XC327666.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay']
+ERROR:root:predicted count:
+ERROR:root:[2 4]
+ERROR:root:./dataset/norcar/XC373569.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay', 'bkcchi']
+ERROR:root:predicted count:
+ERROR:root:[ 1 15  3]
+ERROR:root:./dataset/norcar/XC325658.mp3
+ERROR:root:predicted labels:
+ERROR:root:['blujay', 'bkcchi']
+ERROR:root:predicted count:
+ERROR:root:[5 5]
+ERROR:root:./dataset/norcar/XC321934.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay']
+ERROR:root:predicted count:
+ERROR:root:[1 3]
+ERROR:root:./dataset/norcar/XC363861.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay']
+ERROR:root:predicted count:
+ERROR:root:[11 14]
+ERROR:root:./dataset/norcar/XC466178.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay']
+ERROR:root:predicted count:
+ERROR:root:[7 9]
+ERROR:root:./dataset/norcar/XC466697.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay']
+ERROR:root:predicted count:
+ERROR:root:[5 8]
+ERROR:root:./dataset/norcar/XC476938.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay']
+ERROR:root:predicted count:
+ERROR:root:[2 3]
+ERROR:root:./dataset/norcar/XC466692.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay', 'bkcchi']
+ERROR:root:predicted count:
+ERROR:root:[ 4 15  3]
+ERROR:root:./dataset/blujay/XC168082.mp3
+ERROR:root:predicted labels:
+ERROR:root:['blujay', 'bkcchi']
+ERROR:root:predicted count:
+ERROR:root:[1 2]
+ERROR:root:./dataset/blujay/XC277334.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay']
+ERROR:root:predicted count:
+ERROR:root:[2 1]
+ERROR:root:./dataset/blujay/XC346014.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar']
+ERROR:root:predicted count:
+ERROR:root:[1]
+ERROR:root:./dataset/blujay/XC321552.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay']
+ERROR:root:predicted count:
+ERROR:root:[1 1]
+ERROR:root:./dataset/bkcchi/XC304269.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay', 'bkcchi']
+ERROR:root:predicted count:
+ERROR:root:[1 2 2]
+ERROR:root:./dataset/bkcchi/XC16900.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay', 'bkcchi']
+ERROR:root:predicted count:
+ERROR:root:[1 5 1]
+ERROR:root:./dataset/bkcchi/XC206090.mp3
+ERROR:root:predicted labels:
+ERROR:root:['blujay', 'bkcchi']
+ERROR:root:predicted count:
+ERROR:root:[5 1]
+ERROR:root:./dataset/bkcchi/XC459444.mp3
+ERROR:root:predicted labels:
+ERROR:root:['blujay', 'bkcchi']
+ERROR:root:predicted count:
+ERROR:root:[17  9]
+ERROR:root:./dataset/bkcchi/XC305762.mp3
+ERROR:root:predicted labels:
+ERROR:root:['blujay', 'bkcchi']
+ERROR:root:predicted count:
+ERROR:root:[5 3]
+ERROR:root:./dataset/bkcchi/XC289009.mp3
+ERROR:root:predicted labels:
+ERROR:root:['norcar', 'blujay', 'bkcchi']
+ERROR:root:predicted count:
+ERROR:root:[4 5 1]
+ERROR:root:./dataset/bkcchi/XC304270.mp3
+ERROR:root:predicted labels:
+ERROR:root:['blujay', 'bkcchi']
+ERROR:root:predicted count:
+ERROR:root:[4 1]
