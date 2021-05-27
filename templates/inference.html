@@ -1,9 +1,19 @@
 <!doctype html>
 <title>Prediction results</title>
 {% if name %}
-  <h1>Prediction for file: {{ name }}!</h1>
-  <h1>Predicted bird: {{ prediction }}</h1>
-  <h1>Confidence level: {{ confidence }}</h1>
+  <h1>Prediction Results:</h1>
+  <p>Prediction for file: {{ name }}!</p>
+  <p>Predicted bird: {{ prediction }}</p>
+  <p>Confidence level: {{ confidence }}</p>
 {% else %}
-  <h1>No files to predict</h1>
+  <p>No files to predict</p>
 {% endif %}
+
+
+<p>Listen to the uploaded audio:</p>
+<audio
+    controls
+    src="/play/{{name}}">
+        Your browser does not support the
+        <code>audio</code> element.
+</audio>

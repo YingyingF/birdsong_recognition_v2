@@ -1,6 +1,7 @@
-from flask import Flask, render_template, flash, request, redirect, url_for
+from flask import Flask, render_template, flash, request, redirect, url_for, Response
 from markupsafe import escape
 import os
+import pathlib
 from werkzeug.utils import secure_filename
 from birdsong_recognition.inference import inference
 
@@ -10,6 +11,7 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16E6
 
 UPLOAD_FOLDER = './test_data/norcar/'
+pathlib.Path(UPLOAD_FOLDER).mkdir(parents=True)
 ALLOWED_EXTENSIONS = {'mp3'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -38,12 +40,17 @@ def upload_file():
     return '''
     <!doctype html>
     <title>Upload new File</title>
-    <h1>Upload new File</h1>
+    <h1>Upload bird song </h1>
     <form method=post enctype=multipart/form-data>
       <input type=file name=file>
       <input type=submit value=Upload>
     </form>
     '''
+
+@app.route("/play/<name>")
+def playback(name):
+    data = open(pathlib.Path(UPLOAD_FOLDER) / name, 'rb').read()
+    return Response(data, mimetype='audio/mp3')
 
 @app.route("/uploads/<name>")
 def uploaded_file(name):
