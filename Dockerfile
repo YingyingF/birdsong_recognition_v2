@@ -25,7 +25,7 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-# CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "--workers", "1", "--bind", "0.0.0.0:8080", "app:app"]
 
 # Run app.py when the container launches
-ENTRYPOINT ["python", "app.py"]
+# ENTRYPOINT ["python", "app.py"]

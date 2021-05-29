@@ -3,6 +3,7 @@ from markupsafe import escape
 import os
 import pathlib
 from werkzeug.utils import secure_filename
+import tempfile
 from birdsong_recognition.inference import inference
 
 app = Flask(__name__)
@@ -11,7 +12,7 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16E6
 
 UPLOAD_FOLDER = './test_data/norcar/'
-pathlib.Path(UPLOAD_FOLDER).mkdir(parents=True)
+pathlib.Path(UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)
 ALLOWED_EXTENSIONS = {'mp3'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -57,3 +58,7 @@ def uploaded_file(name):
     predicted_bird, confidence_level = inference(name)
 
     return render_template('inference.html', name=name, prediction=predicted_bird, confidence=confidence_level)
+
+if __name__ == '__main__':
+    server_port = os.environ.get('PORT', '8080')
+    app.run(debug=False, port=server_port, host='0.0.0.0')
