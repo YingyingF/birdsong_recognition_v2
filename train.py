@@ -20,12 +20,12 @@ def main(config):
     run_test = config.run_test
 
     # check if preprocessed dataset directory already exists.
-    if not os.path.exists('./preprocessed_dataset'):
+    if not os.path.exists('./preprocessed_dataset/train_ds'):
         preprocess(running_in_colab=config.running_in_colab, ebirds=EBIRDS)
 
     element_spec = (tf.TensorSpec(shape=(132300,), dtype=tf.float32, name='input'),
                     tf.TensorSpec(shape=(), dtype=tf.int32, name='label'))
-    train_ds, val_ds = create_ds(element_spec)
+    train_ds, val_ds, test_ds = create_ds(element_spec)
     
     """### simple model"""
     keras.backend.clear_session()
@@ -38,7 +38,7 @@ def main(config):
                 layers.Flatten(),
                 layers.Dense(config.hidden_layer_size, activation='relu'),
                 layers.Dropout(config.dropout),
-                layers.Dense(3)
+                layers.Dense(4)
     ])
 
     model.summary()
@@ -63,8 +63,12 @@ def main(config):
 
 if __name__== '__main__':
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument('--run_test', type=bool, default=False)
-    arg_parser.add_argument('--running_in_colab', type=bool, default=True)
+    arg_parser.add_argument('--run_test', dest='run_test', action='store_true')
+    arg_parser.add_argument('--not_run_test', dest='run_test', action='store_true')
+    arg_parser.set_defaults(run_test=False)
+    arg_parser.add_argument('--running_in_colab', dest='colab', action='store_true')
+    arg_parser.add_argument('--not_running_in_colab', dest='colab', action='store_false')
+    arg_parser.set_defaults(colab=True)
     arg_parser.add_argument('--lr', default=1e-3)
     arg_parser.add_argument('--bs', default=32)
     arg_parser.add_argument('--dropout', default=0.2)
@@ -78,7 +82,7 @@ if __name__== '__main__':
                 'hidden_layer_size': 64,
                 'epochs': 20,
                 'run_test': args.run_test,
-                'running_in_colab': args.running_in_colab,
+                'running_in_colab': args.colab,
                 }
 
     if not args.run_test:

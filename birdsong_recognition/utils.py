@@ -74,6 +74,7 @@ def split_file_by_window_size(sample, label, min_file_size=132300):
 
     # ignore extremely long files for now
     subsample_limit = 75
+    AUDIO_VAR_THRESHOLD = 0.003
     if subsample_count <= subsample_limit:
         # if the last sample is at least half the window size, then pad it, if not, clip it.
         last_sample_size = sample.shape[0]%min_file_size
@@ -88,10 +89,15 @@ def split_file_by_window_size(sample, label, min_file_size=132300):
             else:
                 sample = sample[:subsample_count*min_file_size]
         sample = tf.reshape(sample, shape=[subsample_count, min_file_size])
-        label = tf.pad(tf.expand_dims(label, axis=0), paddings=[[0, subsample_count-1]], constant_values=label.numpy())
+        # chunk_var = tf.math.reduce_variance(sample, axis=1)
+        # label = tf.pad(tf.expand_dims(label, axis=0), paddings=[[0, subsample_count-1]], constant_values=label.numpy())
+        # label = tf.where(chunk_var < AUDIO_VAR_THRESHOLD, 3, label)
     else:
         sample = tf.reshape(sample[:subsample_limit*min_file_size], shape=[subsample_limit, min_file_size])
-        label = tf.pad(tf.expand_dims(label, axis=0), paddings=[[0, 74]], constant_values=label.numpy())
+        # label = tf.pad(tf.expand_dims(label, axis=0), paddings=[[0, 74]], constant_values=label.numpy())
+    chunk_var = tf.math.reduce_variance(sample, axis=1)
+    # label = tf.pad(tf.expand_dims(label, axis=0), paddings=[[0, subsample_count-1]], constant_values=label.numpy())
+    label = tf.where(chunk_var < AUDIO_VAR_THRESHOLD, 3, label)
     return sample, label
 
 # Cell
